@@ -2,69 +2,186 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import BottomNavigation from '../components/BottomNavigation';
-import CryptoTable from '../components/CryptoTable';
-import { Button } from '@/components/ui/button';
+import { Search, ArrowUp, ArrowDown, Star } from 'lucide-react';
 
 const Marketplace = () => {
   const [activeCategory, setActiveCategory] = useState('digital');
+  const [favoriteOnly, setFavoriteOnly] = useState(false);
   
   const categories = [
-    { id: 'digital', name: 'Digital currency' },
+    { id: 'digital', name: 'Crypto' },
     { id: 'forex', name: 'Forex' },
-    { id: 'precious', name: 'Precious metals' },
-    { id: 'index', name: 'Index' },
+    { id: 'precious', name: 'Commodities' },
+    { id: 'index', name: 'Indices' },
     { id: 'futures', name: 'Futures' }
   ];
+
+  const markets = [
+    { 
+      id: 'btc', 
+      name: 'BTC/USDT', 
+      price: '49,247.52', 
+      change: '+2.38%', 
+      volume: '$28.4B',
+      positive: true,
+      favorite: true,
+      img: '💰'
+    },
+    { 
+      id: 'eth', 
+      name: 'ETH/USDT', 
+      price: '2,354.21', 
+      change: '+1.15%', 
+      volume: '$12.1B',
+      positive: true,
+      favorite: true,
+      img: '🪙'
+    },
+    { 
+      id: 'sol', 
+      name: 'SOL/USDT', 
+      price: '102.85', 
+      change: '+4.63%', 
+      volume: '$7.2B',
+      positive: true,
+      favorite: false,
+      img: '💎'
+    },
+    { 
+      id: 'ada', 
+      name: 'ADA/USDT', 
+      price: '0.4582', 
+      change: '-0.23%', 
+      volume: '$2.1B',
+      positive: false,
+      favorite: false,
+      img: '🔹'
+    },
+    { 
+      id: 'dot', 
+      name: 'DOT/USDT', 
+      price: '6.2451', 
+      change: '-1.78%', 
+      volume: '$1.5B',
+      positive: false,
+      favorite: false,
+      img: '🔷'
+    },
+    { 
+      id: 'link', 
+      name: 'LINK/USDT', 
+      price: '15.241', 
+      change: '+0.87%', 
+      volume: '$1.2B',
+      positive: true,
+      favorite: false,
+      img: '🔗'
+    },
+    { 
+      id: 'xlm', 
+      name: 'XLM/USDT', 
+      price: '0.1203', 
+      change: '-0.42%', 
+      volume: '$0.9B',
+      positive: false,
+      favorite: false,
+      img: '⭐'
+    },
+  ];
+
+  const filteredMarkets = favoriteOnly 
+    ? markets.filter(market => market.favorite)
+    : markets;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <NavBar />
       
-      <main className="pt-20 pb-16">
-        <div className="container px-4">
+      <main className="pt-16 pb-20">
+        <div className="container px-4 py-4">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mb-4"
           >
-            <h1 className="text-xl font-medium mb-4">Market</h1>
+            <div className="mb-6 flex items-center justify-between">
+              <h1 className="text-xl font-semibold">Markets</h1>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <input 
+                  type="text" 
+                  placeholder="Search markets" 
+                  className="pl-9 pr-4 py-2 rounded-lg bg-card border border-border text-sm w-full md:w-64"
+                />
+              </div>
+            </div>
             
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-6 overflow-x-auto pb-2 scrollbar-none">
+              <button 
+                onClick={() => setFavoriteOnly(!favoriteOnly)}
+                className={`flex items-center rounded-full px-4 py-2 text-sm font-medium ${
+                  favoriteOnly ? 'bg-crypto-accent text-white' : 'bg-muted border border-border text-foreground/80'
+                }`}
+              >
+                <Star className="h-4 w-4 mr-1" />
+                Favorites
+              </button>
+              
               {categories.map((category) => (
-                <Button 
+                <button 
                   key={category.id}
-                  variant="outline"
-                  className={`rounded-full px-4 py-1 text-sm ${
-                    activeCategory === category.id 
-                      ? 'bg-crypto-accent text-white border-transparent' 
-                      : 'bg-gray-100/10 text-foreground/70 border-gray-700/30'
+                  className={`rounded-full px-4 py-2 text-sm font-medium ${
+                    activeCategory === category.id && !favoriteOnly
+                      ? 'bg-crypto-accent text-white' 
+                      : 'bg-muted border border-border text-foreground/80'
                   }`}
-                  onClick={() => setActiveCategory(category.id)}
+                  onClick={() => {
+                    setActiveCategory(category.id);
+                    setFavoriteOnly(false);
+                  }}
                 >
                   {category.name}
-                </Button>
+                </button>
               ))}
             </div>
-          </motion.div>
-          
-          <div className="overflow-hidden rounded-lg">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="grid grid-cols-3 w-full border-b border-gray-700/30 px-4 py-3 text-sm">
-                <div className="text-foreground/70">Market</div>
-                <div className="text-right text-foreground/70">Price</div>
-                <div className="text-right text-foreground/70">Change</div>
+            
+            <div className="bg-card rounded-xl overflow-hidden shadow-sm">
+              <div className="grid grid-cols-4 p-4 border-b border-border text-sm font-medium text-muted-foreground">
+                <div>Market</div>
+                <div className="text-right">Price</div>
+                <div className="text-right">24h Change</div>
+                <div className="text-right">Volume</div>
               </div>
               
-              <CryptoTable category={activeCategory} />
-            </motion.div>
-          </div>
+              <div className="divide-y divide-border">
+                {filteredMarkets.map((market) => (
+                  <div 
+                    key={market.id}
+                    className="grid grid-cols-4 p-4 text-sm hover:bg-muted/50 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center">
+                      <button className="mr-2 text-muted-foreground hover:text-yellow-400">
+                        <Star className="h-4 w-4" fill={market.favorite ? "currentColor" : "none"} color={market.favorite ? "#EAB308" : "currentColor"} />
+                      </button>
+                      <span className="mr-2">{market.img}</span>
+                      <span className="font-medium">{market.name}</span>
+                    </div>
+                    <div className="text-right font-medium">${market.price}</div>
+                    <div className={`text-right flex items-center justify-end font-medium ${market.positive ? 'text-crypto-positive' : 'text-crypto-negative'}`}>
+                      {market.positive ? (
+                        <ArrowUp className="h-3 w-3 mr-1" />
+                      ) : (
+                        <ArrowDown className="h-3 w-3 mr-1" />
+                      )}
+                      {market.change}
+                    </div>
+                    <div className="text-right text-muted-foreground">{market.volume}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         </div>
       </main>
       

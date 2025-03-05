@@ -1,169 +1,145 @@
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Slider } from '@/components/ui/slider';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { ArrowDownUp, TrendingUp, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const ExchangeForm = () => {
-  const [amount, setAmount] = useState<string>('');
-  const [sliderValue, setSliderValue] = useState<number[]>([0]);
-
+  const [tradeType, setTradeType] = useState('market');
+  const [buyOrSell, setBuyOrSell] = useState('buy');
+  
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <Tabs defaultValue="spot" className="w-full">
-        <div className="border-b border-gray-700/30">
-          <TabsList className="bg-transparent border-none w-full flex justify-start">
-            <TabsTrigger 
-              value="spot" 
-              className="data-[state=active]:text-crypto-accent data-[state=active]:border-b-2 data-[state=active]:border-crypto-accent rounded-none border-b-2 border-transparent px-6 py-2 font-medium"
-            >
-              Spot
-            </TabsTrigger>
-            <TabsTrigger 
-              value="swap" 
-              className="data-[state=active]:text-crypto-accent data-[state=active]:border-b-2 data-[state=active]:border-crypto-accent rounded-none border-b-2 border-transparent px-6 py-2 font-medium"
-            >
-              Swap
-            </TabsTrigger>
-            <TabsTrigger 
-              value="seconds" 
-              className="data-[state=active]:text-crypto-accent data-[state=active]:border-b-2 data-[state=active]:border-crypto-accent rounded-none border-b-2 border-transparent px-6 py-2 font-medium"
-            >
-              Seconds
-            </TabsTrigger>
-          </TabsList>
+    <div className="bg-card rounded-xl p-5 shadow-md">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center mr-2">
+            <span className="text-white font-bold text-sm">BTC</span>
+          </div>
+          <span className="text-lg font-semibold">Bitcoin / USDT</span>
         </div>
-        
-        <TabsContent value="spot" className="mt-4">
-          <div className="flex items-center mb-4">
-            <div className="flex items-center space-x-2">
-              <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC" className="w-6 h-6" />
-              <div className="font-medium text-lg">BTC</div>
-              <div className="text-crypto-positive">+3.32%</div>
-            </div>
-          </div>
-          
-          <div className="bg-gray-100/5 rounded-md mb-4">
-            <div className="grid grid-cols-2 overflow-hidden rounded-t-md">
-              <Button 
-                variant="ghost" 
-                className="py-3 px-6 border-b-2 border-crypto-accent text-white bg-crypto-accent hover:bg-crypto-accent/90"
-              >
-                Buy
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="py-3 px-6 text-foreground/70 hover:bg-gray-100/10"
-              >
-                Sell
-              </Button>
-            </div>
-            
-            <div className="p-4 border-b border-gray-700/20">
-              <div className="flex justify-between items-center text-sm text-foreground/70 mb-2">
-                <span>Market price</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-medium">86931.6098</span>
-                <span className="text-foreground/70">USDT</span>
-              </div>
-            </div>
-            
-            <div className="p-4 border-b border-gray-700/20">
-              <div className="flex justify-between items-center text-sm text-foreground/70 mb-2">
-                <span>Amount</span>
-                <span>BTC</span>
-              </div>
-              <Input 
-                type="number" 
-                value={amount} 
-                onChange={(e) => setAmount(e.target.value)} 
-                className="border-none bg-transparent text-lg focus-visible:ring-0 p-0 h-auto"
-                placeholder="0.0000"
-              />
-            </div>
-            
-            <div className="p-4">
-              <Slider
-                defaultValue={[0]}
-                max={100}
-                step={1}
-                value={sliderValue}
-                onValueChange={setSliderValue}
-                className="my-4"
-              />
-              <div className="flex justify-between text-xs text-foreground/60">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
-              </div>
-            </div>
-            
-            <div className="p-4 border-t border-gray-700/20">
-              <div className="flex justify-between items-center text-sm mb-1">
-                <span className="text-foreground/70">Pay</span>
-                <span className="font-medium">0 USDT</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-foreground/70">Available</span>
-                <span className="font-medium">0 USDT</span>
-              </div>
-            </div>
-          </div>
-          
-          <Button className="w-full bg-crypto-accent hover:bg-crypto-accent/90 py-6 rounded-md">
-            Buy
-          </Button>
-          
-          <div className="mt-8">
-            <h3 className="font-medium mb-4">Commissioned orders</h3>
-            {/* Empty state or orders would go here */}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="swap" className="mt-4">
-          <div className="text-center p-8">Swap trading interface coming soon</div>
-        </TabsContent>
-        
-        <TabsContent value="seconds" className="mt-4">
-          <div className="text-center p-8">Seconds trading interface coming soon</div>
-        </TabsContent>
-      </Tabs>
-      
-      <div className="mt-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-100/5 rounded-md p-4">
-            <h3 className="text-lg font-medium text-crypto-accent mb-2">Price (USDT)</h3>
-            <div className="space-y-2 mt-4">
-              {[
-                { price: '86971.4445', amount: '0.0007' },
-                { price: '86873.8353', amount: '0.0159' },
-                { price: '86960.1530', amount: '0.6732' },
-                { price: '86968.1530', amount: '0.0316' },
-                { price: '87020.5497', amount: '0.0019' },
-                { price: '87077.4833', amount: '0.1938' },
-                { price: '86987.9530', amount: '0.1091' },
-                { price: '86939.2738', amount: '0.0072' },
-                { price: '86895.7156', amount: '0.0007' },
-                { price: '87000.5530', amount: '0.1763' }
-              ].map((order, index) => (
-                <div key={index} className="flex justify-between text-sm">
-                  <span className="text-crypto-accent">{order.price}</span>
-                  <span className="text-foreground/70">{order.amount}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="bg-gray-100/5 rounded-md p-4 flex flex-col items-center justify-center">
-            <div className="text-3xl font-bold text-center">86931.6098</div>
+        <div className="text-right">
+          <div className="text-xl font-bold text-white">49,247.52</div>
+          <div className="text-crypto-positive text-sm flex items-center">
+            <TrendingUp size={14} className="mr-1" />
+            +2.38%
           </div>
         </div>
       </div>
+      
+      <Tabs defaultValue="spot" className="w-full">
+        <TabsList className="grid grid-cols-2 mb-6">
+          <TabsTrigger value="spot" className="font-medium">Spot</TabsTrigger>
+          <TabsTrigger value="margin" className="font-medium">Margin</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="spot" className="space-y-4">
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            <Button 
+              variant={buyOrSell === 'buy' ? 'default' : 'outline'} 
+              className={`font-semibold ${buyOrSell === 'buy' ? 'bg-crypto-positive hover:bg-crypto-positive/90' : ''}`}
+              onClick={() => setBuyOrSell('buy')}
+            >
+              Buy
+            </Button>
+            <Button 
+              variant={buyOrSell === 'sell' ? 'default' : 'outline'} 
+              className={`font-semibold ${buyOrSell === 'sell' ? 'bg-crypto-negative hover:bg-crypto-negative/90' : ''}`}
+              onClick={() => setBuyOrSell('sell')}
+            >
+              Sell
+            </Button>
+          </div>
+          
+          <div className="flex bg-muted rounded-lg p-1 mb-4">
+            <button 
+              className={`flex-1 py-2 text-center rounded ${tradeType === 'market' ? 'bg-card shadow-sm' : ''}`}
+              onClick={() => setTradeType('market')}
+            >
+              Market
+            </button>
+            <button 
+              className={`flex-1 py-2 text-center rounded ${tradeType === 'limit' ? 'bg-card shadow-sm' : ''}`}
+              onClick={() => setTradeType('limit')}
+            >
+              Limit
+            </button>
+            <button 
+              className={`flex-1 py-2 text-center rounded ${tradeType === 'stop' ? 'bg-card shadow-sm' : ''}`}
+              onClick={() => setTradeType('stop')}
+            >
+              Stop
+            </button>
+          </div>
+          
+          {tradeType === 'market' && (
+            <>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <label className="text-muted-foreground">Price</label>
+                    <div className="flex items-center">
+                      <span className="text-foreground mr-1">Market</span>
+                      <span className="text-muted-foreground">USDT</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <label className="text-muted-foreground">Amount</label>
+                    <div className="flex items-center">
+                      <span className="text-muted-foreground">Available:</span>
+                      <span className="text-foreground ml-1">23,245.43 USDT</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center border border-input rounded-md overflow-hidden">
+                    <input 
+                      type="text" 
+                      placeholder="0.00" 
+                      className="flex-1 bg-transparent border-0 focus:ring-0 py-3 px-4"
+                    />
+                    <div className="pr-3 flex items-center gap-2">
+                      <button className="text-xs bg-muted px-2 py-1 rounded">25%</button>
+                      <span className="text-sm text-muted-foreground">USDT</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="py-2">
+                  <div className="grid grid-cols-4 gap-2">
+                    <button className="text-xs bg-muted rounded py-1">25%</button>
+                    <button className="text-xs bg-muted rounded py-1">50%</button>
+                    <button className="text-xs bg-muted rounded py-1">75%</button>
+                    <button className="text-xs bg-muted rounded py-1">100%</button>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between text-sm text-muted-foreground py-2 border-t border-border">
+                  <span>Total</span>
+                  <span>0.00 USDT</span>
+                </div>
+                
+                <Button 
+                  className={`w-full py-6 text-base font-semibold ${
+                    buyOrSell === 'buy' 
+                      ? 'bg-crypto-positive hover:bg-crypto-positive/90' 
+                      : 'bg-crypto-negative hover:bg-crypto-negative/90'
+                  }`}
+                >
+                  {buyOrSell === 'buy' ? 'Buy BTC' : 'Sell BTC'}
+                </Button>
+              </div>
+            </>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="margin">
+          <div className="h-48 flex items-center justify-center">
+            <p className="text-muted-foreground">Margin trading coming soon</p>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

@@ -13,8 +13,12 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1rem',
 			screens: {
+				'sm': '640px',
+				'md': '768px',
+				'lg': '1024px',
+				'xl': '1280px',
 				'2xl': '1400px'
 			}
 		},
@@ -71,8 +75,8 @@ export default {
 					'dark': '#1A1F2C',
 					'positive': '#34d399',
 					'negative': '#ef4444',
-					'card': 'rgba(255, 255, 255, 0.05)',
-					'card-hover': 'rgba(255, 255, 255, 0.08)',
+					'card': 'rgba(30, 41, 59, 0.8)',
+					'card-hover': 'rgba(30, 41, 59, 0.9)',
 				}
 			},
 			borderRadius: {
